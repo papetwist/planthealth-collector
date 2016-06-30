@@ -8,14 +8,31 @@ import serial
 # detect com port
 for com in range(0,4):
     try:
-	PORT = '/dev/ttyACM'+str(com)
-	BAUD = 9600
-	board = serial.Serial(PORT,BAUD)
-	#board.close()
-	break
+		board = serial.Serial()
+		board.port = '/dev/ttyACM'+str(com)
+		board.baudrate = 9600
+		board.timeout = 4 
+		board.databits = 8
+		board.stopbits = 1
+		board.open()
+		time.sleep(2)
+		#board.close()		
+		break
     except:
-	pass
+		pass
 
-board.write("Hello")
-answer = board.read()
-print answer
+configmatch = 1
+
+while configmatch:
+	actuators = board.readline()
+	print actuators
+	print "read..."
+
+print "end"
+
+def updateconfig():
+	board.write("TEST;")
+	answer = board.readline()
+	return 0
+
+board.close()
